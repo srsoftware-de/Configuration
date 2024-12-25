@@ -10,10 +10,19 @@ import java.util.*;
 import org.json.JSONObject;
 
 
+/**
+ * A Configuration implementation, that stores its data in a json file.
+ * Altered json &lt;em&gt;is not automatically saved&gt;/em&lt; after editing!
+ */
 public class JsonConfig implements Configuration {
 	private final File       file;
 	private final JSONObject json;
 
+	/**
+	 * Create a new JsonConfig instance using the passed file for storage
+	 * @param jsonConfigurationFile this file will be used to store json data
+	 * @throws IOException if one of the file operations failed
+	 */
 	public JsonConfig(File jsonConfigurationFile) throws IOException {
 		file = jsonConfigurationFile;
 		if (file.isDirectory()) throw new IllegalArgumentException("%s is a directory, file expected".formatted(file));
@@ -23,6 +32,11 @@ public class JsonConfig implements Configuration {
 		json = new JSONObject(Files.readString(file.toPath()));
 	}
 
+	/**
+	 * Create a new JsonConfig using the passed applicationName
+	 * @param applicationName this determines the name of the file, to which data are stored
+	 * @throws IOException if one of the file operations failed
+	 */
 	public JsonConfig(String applicationName) throws IOException {
 		this(Locator.locateConfig(applicationName, "json"));
 	}
@@ -43,10 +57,18 @@ public class JsonConfig implements Configuration {
 		if (json.get(key) instanceof JSONObject inner) drop(inner, path);
 	}
 
+	/**
+	 * returns the file object of the json storage
+	 * @return a File object
+	 */
 	public File file() {
 		return file;
 	}
 
+	/**
+	 * creates a one-line representation of the json of this config
+	 * @return the config as json string
+	 */
 	public String flat() {
 		return json.toString();
 	}
@@ -93,6 +115,14 @@ public class JsonConfig implements Configuration {
 			};
 			return get((JSONObject)inner, path, defaultValue);
 		}
+	}
+
+	/**
+	 * updates the storage file with the current json data
+	 * @throws IOException if writing the file does so
+	 */
+	public void save() throws IOException {
+		Files.writeString(file.toPath(), json.toString(2));
 	}
 
 	@Override

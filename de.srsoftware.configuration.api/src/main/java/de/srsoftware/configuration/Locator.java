@@ -8,8 +8,8 @@ import java.nio.file.Path;
  * Helper for getting a config file
  */
 public class Locator {
-
-	private Locator(){}
+	private Locator() {
+	}
 
 	/**
 	 * Get the proper configuration file for a given application name with the desired extension
