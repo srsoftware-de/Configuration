@@ -2,6 +2,9 @@
 package de.srsoftware.configuration;
 
 
+import static java.lang.System.Logger;
+import static java.lang.System.getLogger;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,14 +12,14 @@ import java.nio.file.Files;
 import java.util.*;
 import org.json.JSONObject;
 
-
 /**
  * A Configuration implementation, that stores its data in a json file.
  * Altered json &lt;em&gt;is not automatically saved&gt;/em&lt; after editing!
  */
 public class JsonConfig implements Configuration {
-	private final File       file;
-	private final JSONObject json;
+	private static final Logger LOG = getLogger(JsonConfig.class.getSimpleName());
+	private final File          file;
+	private final JSONObject    json;
 
 	/**
 	 * Create a new JsonConfig instance using the passed file for storage
@@ -29,6 +32,7 @@ public class JsonConfig implements Configuration {
 		if (!file.exists()) try (var out = new FileWriter(file)) {
 				out.write("{}\n");
 			}
+		LOG.log(Logger.Level.INFO, "Loading json config file from {0}…", file);
 		json = new JSONObject(Files.readString(file.toPath()));
 	}
 
