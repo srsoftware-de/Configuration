@@ -117,4 +117,19 @@ public class JsonConfigTest {
 		config.drop("hello");
 		assertEquals("{}", config.flat());
 	}
+
+	@Test
+	public void testSubset() throws IOException {
+		config.set("a.a.a", "aaa");
+		config.set("a.a.b", "aab");
+		config.set("a.b.a", "aba");
+		config.set("a.b.b", "abb");
+		assertEquals("{\"a\":{\"a\":{\"a\":\"aaa\",\"b\":\"aab\"},\"b\":{\"a\":\"aba\",\"b\":\"abb\"}}}",config.flat());
+		var subset = config.subset("a");
+		assertTrue(subset.isPresent());
+		assertEquals("{\"a\":{\"a\":\"aaa\",\"b\":\"aab\"},\"b\":{\"a\":\"aba\",\"b\":\"abb\"}}",subset.get().flat());
+		subset = config.subset("a.b");
+		assertTrue(subset.isPresent());
+		assertEquals("{\"a\":\"aba\",\"b\":\"abb\"}",subset.get().flat());
+	}
 }

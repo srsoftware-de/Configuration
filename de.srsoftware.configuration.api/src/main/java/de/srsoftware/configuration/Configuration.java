@@ -44,4 +44,12 @@ public interface Configuration {
 	 * @throws IOException if altering the configuration fails
 	 */
 	<C extends Configuration> C set(String key, Object value) throws IOException;
+
+	/**
+	 * get a subset of this configuration
+	 *
+	 * @param key specifies, which subset is requested
+	 * @return the part of the Configuration which is located at the key
+	 */
+	Optional<? extends Configuration> subset(String key);
 }

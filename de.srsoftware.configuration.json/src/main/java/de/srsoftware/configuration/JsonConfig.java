@@ -37,6 +37,15 @@ public class JsonConfig implements Configuration {
 	}
 
 	/**
+	 * create a JsonConfig instance from a Json object
+	 * @param json the data to use
+	 */
+	public JsonConfig(JSONObject json){
+		file = null;
+		this.json = json;
+	}
+
+	/**
 	 * Create a new JsonConfig using the passed applicationName
 	 * @param applicationName this determines the name of the file, to which data are stored
 	 * @throws IOException if one of the file operations failed
@@ -146,6 +155,12 @@ public class JsonConfig implements Configuration {
 			if (!(inner instanceof JSONObject)) json.put(key, inner = new JSONObject());
 			set((JSONObject)inner, path, value);
 		}
+	}
+
+	@Override
+	public Optional<JsonConfig> subset(String key) {
+		Optional<JSONObject> json = get(key);
+		return json.map(JsonConfig::new);
 	}
 
 	private Stack<String> toPath(String key) {

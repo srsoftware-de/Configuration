@@ -11,7 +11,6 @@ spotless {
         target("**/src/**/java/**/*.java")
         removeUnusedImports()
         importOrder()
-        clangFormat("18.1.8").style("file:config/clang-format")
         licenseHeader("/* © SRSoftware 2024 */")
     }
 }
