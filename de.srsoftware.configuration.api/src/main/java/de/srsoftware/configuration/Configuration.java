@@ -2,6 +2,7 @@
 package de.srsoftware.configuration;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -34,6 +35,12 @@ public interface Configuration {
 	 * @param <T> the expected type of the return value
 	 */
 	<T> T get(String key, T defaultValue);
+
+	/**
+	 * Get the configuration`s key set
+	 * @return a collection of strings which are the keys to the configuration
+	 */
+	Collection<String> keys();
 
 	/**
 	 * Assign a specific key with a new value. If the key was assigned with another value before, the old value is overwritten

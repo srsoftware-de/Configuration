@@ -130,6 +130,11 @@ public class JsonConfig implements Configuration {
 		}
 	}
 
+	@Override
+	public Collection<String> keys() {
+		return json.keySet();
+	}
+
 	/**
 	 * updates the storage file with the current json data
 	 * @throws IOException if writing the file does so
